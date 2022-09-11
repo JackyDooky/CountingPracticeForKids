@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Count The Hearts</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                padding: 20px;
+            }
+            #overlay {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            #overlay div {
+                background-color: white;
+                padding: 10px 20px;
+                display: flex;
+                flex-direction: column;
+            }
+            div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            h2 {
+                margin-bottom: 10px;
+            }
+            input {
+                padding: 3px 5px 3px 3px;
+                font-size: 14px;
+                margin-bottom: 5px;
+                margin-top: 8px;
+            }
+            div div {
+                display: flex;
+                flex-direction: row;
+            }
+            #chances {
+                margin-top: -8px;
+                margin-right: 5px;
+            }
+            button {
+                background-color: #dc3545;
+                color: white;
+                border: none;
+                transition: background-color 200ms;
+                cursor: pointer;
+                padding: 5px 10px;
+                border-radius: 3px;
+            }
+            button:hover {
+                background-color: #c82333;
+            }
+            button:active {
+                background-color: #bd2130;
+                box-shadow: 0px 0px 2px 4px rgba(220, 53, 69, 0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="overlay">
+            <div>
+                <p>Welcome To My Website</p>
+                <div>
+                    <input>
+                </div>
+                <div>
+                    <input>
+                </div>
+            </div>
+        </div>
+        <div id="main">
+            <h2 id="h2"></h2>
+            <div id="parent"></div>
+            <form id="form" autocomplete="off">
+                <input id="input" placeholder="Enter a number">
+            </form>
+            <p id="result"></p>
+            <button id="button" onclick="location.reload();">Try Again</button>
+        </div>
+    </body>
+    <script defer>
+        let form = document.getElementById("form");
+        let lollipops;
+        let chances;
+        let h2 = document.getElementById("h2");
+        h2.innerHTML = "Count The Hearts (1 - " + lollipops + ")";
+        // let main = document.getElementById("main").style.display="none";
+        let input = document.getElementById("input");
+        let result = document.getElementById("result");
+        let parent = document.getElementById("parent");
+        let wrong = 0;
+        let button = document.getElementById("button").style.display="none";
+        let randomNumber = Math.floor(Math.random() * 10) + 1;
+        
+        form.addEventListener("submit", handleForm);
+        console.log(randomNumber);
+
+        for (let i = 0; i < randomNumber; i++) {
+            let child = document.createElement("p");
+            child.innerText = "🍭";
+            parent.appendChild(child);
+        }
+
+        input.addEventListener("keyup", function(event) {
+            if (event.key == "Enter") {
+                if (parseInt(input.value) == randomNumber) {
+                    result.innerHTML = "Correct";
+                    disappear(1500);
+                }
+                else {
+                    result.innerHTML = "Incorrect";
+                    disappear(1500);
+                    wrong++;
+                    if (wrong == 5) {
+                        setTimeout( function() {
+                            document.getElementById("button").style.display="block";
+                        }, 1000); 
+                    }
+                }
+                }
+            });
+
+        function disappear(ms) {
+            setTimeout(function(){
+                result.innerHTML = "";
+            }, ms);
+        }
+        function handleForm(event) {event.preventDefault(); }
+    </script>
+</html>
