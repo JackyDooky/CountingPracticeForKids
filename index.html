@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Count The Hearts</title>
+        <title>Tập Đếm Số Cho Bé</title>
         <style>
             * {
                 margin: 0;
@@ -71,9 +71,6 @@
                 display: flex;
                 flex-direction: row;
             }
-            #main div {
-                display: flex;
-            }
             #submit {
                 padding: 2px;
                 margin-top: -9px;
@@ -131,7 +128,7 @@
                 <button id="submit" onclick="checkIfCorrect();">🔍</button>
             </div>
             <p id="result"></p>
-            <button id="button" onclick="">Try Again</button>
+            <button id="button" onclick="tryAgain();">Thử Lại</button>
         </div>
     </body>
     <script defer>
@@ -144,30 +141,50 @@
         let result = document.getElementById("result");
         let parent = document.getElementById("parent");
         let wrong = 0;
+        let n;
         let button = document.getElementById("button").style.display="none";
         let randomNumber;
         
-        form.addEventListener("submit", handleForm);
+        form.addEventListener('submit', handleForm);
 
         input.addEventListener("keyup", function(event) {
             if (event.key == "Enter") {
-                checkIfCorrect();
+                if (parseInt(input.value) == randomNumber) {
+                    result.innerHTML = "Chính Xác 🥳🎉";
+                    disappear(750);
+                }
+                else {
+                    result.innerHTML = "Sai Rồi 😢😔";
+                    disappear(750);
+                    wrong++;
+                    if (wrong == chances) {
+                        document.getElementById("submit").setAttribute("disabled", "");
+                        document.getElementById("input").setAttribute("readonly", "");
+                        randomNumber = 0;
+                        setTimeout( function() {
+                        document.getElementById("button").style.display="block";
+                        }, 1500); 
+                    }
+                }
             }
         });
 
         function checkIfCorrect() {
             if (parseInt(input.value) == randomNumber) {
-                result.innerHTML = "Correct";
-                disappear(1500);
+                result.innerHTML = "Chính Xác 🥳🎉";
+                disappear(750);
             }
             else {
-                result.innerHTML = "Incorrect";
-                disappear(1500);
+                result.innerHTML = "Sai Rồi 😢😔";
+                disappear(750);
                 wrong++;
-                if (wrong == 3) {
+                if (wrong == chances) {
+                    document.getElementById("submit").setAttribute("disabled", "");
+                    document.getElementById("input").setAttribute("readonly", "");
+                    randomNumber = 0;
                     setTimeout( function() {
                     document.getElementById("button").style.display="block";
-                    }, 1000); 
+                    }, 1500); 
                 }
             }
         }
@@ -177,25 +194,44 @@
             }, ms);
         }
         function handleForm(event) {event.preventDefault(); }
+        function tryAgain() {
+            document.getElementById("main").style.display="none";
+            document.getElementById("chances").value="";
+            document.getElementById("lollipops").value="";
+            document.getElementById("input").value="";
+            document.getElementById("button").style.display="none";
+            wrong = 0;
+            chances = 0;
+            document.getElementById("input").removeAttribute("readonly");
+            document.getElementById("submit").removeAttribute("disabled");
+            randomNumber = 0;
+            removeAllChild();
+            document.getElementById("overlay").style.display="flex";
+        }
         function finish() {
             chances = document.getElementById("chances").value;
             lollipops = document.getElementById("lollipops").value;
             h2.innerHTML = "Tập Đếm Số (1 - " + lollipops + ")";
-
             console.log(chances);
             console.log(lollipops);            
-
-            let randomNumber = Math.floor(Math.random() * lollipops.value) + 1;
+            randomNumber = Math.floor(Math.random() * document.getElementById("lollipops").value) + 1;
             console.log(randomNumber);
-
             document.getElementById("main").style.display="flex";
             document.getElementById("overlay").style.display="none";
-
+            printLollipops();
+        }
+        function printLollipops() {
             for (let i = 0; i < randomNumber; i++) {
             let child = document.createElement("p");
             child.innerText = "🍭";
             parent.appendChild(child);
+            n++;
+            }
         }
+        function removeAllChild() {
+            while (document.getElementById("parent").firstChild) {
+                document.getElementById("parent").removeChild(document.getElementById("parent").lastChild);
+            };
         }
     </script>
 </html>
