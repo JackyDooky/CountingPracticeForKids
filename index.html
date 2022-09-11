@@ -23,9 +23,31 @@
             }
             #overlay div {
                 background-color: white;
-                padding: 10px 20px;
+                padding: 5px 20px;
                 display: flex;
                 flex-direction: column;
+            }
+            #overlay div div {
+                display: inline;
+            }
+            #chances {
+                width: 128px;
+            }
+            #finish {
+                padding: 3px 15px;
+                background-color: #9bedff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 100ms;
+                transition: box-shadow 100ms;
+            }
+            #finish:hover {
+                background-color: #50e0ff;
+            }
+            #finish:active {
+                background-color: #00d2ff;
+                box-shadow: 0px 0px 4px 1px rgba(46, 218, 255, 0.5)
             }
             div {
                 display: flex;
@@ -46,23 +68,29 @@
                 display: flex;
                 flex-direction: row;
             }
-            #chances {
-                margin-top: -8px;
-                margin-right: 5px;
-            }
-            button {
+            #button {
                 background-color: #dc3545;
                 color: white;
                 border: none;
                 transition: background-color 200ms;
+                transition: box-shadow 200ms;
                 cursor: pointer;
-                padding: 5px 10px;
+                padding: 2px 10px;
+                font-weight: 700;
                 border-radius: 3px;
+                margin-top: -3px;
+                margin-right: -322px;
+                z-index: 2;
             }
-            button:hover {
+            #button {
+                padding: 5px 10px;
+                font-weight: normal;
+                position: static;
+            }
+            #button:hover {
                 background-color: #c82333;
             }
-            button:active {
+            #button:active {
                 background-color: #bd2130;
                 box-shadow: 0px 0px 2px 4px rgba(220, 53, 69, 0.1);
             }
@@ -71,20 +99,25 @@
     <body>
         <div id="overlay">
             <div>
-                <p>Welcome To My Website</p>
-                <div>
-                    <input>
+               <div>
+                    <p>Chào Mừng Bé Đến Với Đếm Số</p>
                 </div>
+                <div id="lollipops-container">
+                    <label>Số Kẹo:</label>
+                    <input placeholder="Kẹo" id="lollipops">
+                </div id="chances-container">
                 <div>
-                    <input>
+                    <label>Số Lần Đếm:</label>
+                    <input placeholder="Lượt" id="chances">
                 </div>
+                <button type="submit" id="finish" onclick="finish();">Xong</button>
             </div>
         </div>
         <div id="main">
             <h2 id="h2"></h2>
             <div id="parent"></div>
             <form id="form" autocomplete="off">
-                <input id="input" placeholder="Enter a number">
+                <input id="input" placeholder="Số Kẹo">
             </form>
             <p id="result"></p>
             <button id="button" onclick="location.reload();">Try Again</button>
@@ -92,10 +125,10 @@
     </body>
     <script defer>
         let form = document.getElementById("form");
-        let lollipops;
         let chances;
+        let lollipops;
         let h2 = document.getElementById("h2");
-        h2.innerHTML = "Count The Hearts (1 - " + lollipops + ")";
+        h2.innerHTML = "Tập Đếm Số (1 - " + lollipops + ")";
         // let main = document.getElementById("main").style.display="none";
         let input = document.getElementById("input");
         let result = document.getElementById("result");
@@ -123,7 +156,7 @@
                     result.innerHTML = "Incorrect";
                     disappear(1500);
                     wrong++;
-                    if (wrong == 5) {
+                    if (wrong == 3) {
                         setTimeout( function() {
                             document.getElementById("button").style.display="block";
                         }, 1000); 
@@ -138,5 +171,13 @@
             }, ms);
         }
         function handleForm(event) {event.preventDefault(); }
+        function finish() {
+            chances = document.getElementById("chances").value;
+            lollipops = document.getElementById("lollipops").value;
+            console.log(chances);
+            console.log(lollipops);            
+            document.getElementById("main").style.display="flex";
+            document.getElementById("overlay").style.display="none";
+        }
     </script>
 </html>
