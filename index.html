@@ -27,13 +27,10 @@
                 display: flex;
                 flex-direction: column;
             }
-            #overlay div div {
-                display: inline;
+            label {
+                margin-bottom: 5px;
             }
-            #chances {
-                width: 128px;
-            }
-            #finish {
+            #finish, #button {
                 padding: 3px 15px;
                 background-color: #9bedff;
                 border: none;
@@ -42,12 +39,23 @@
                 transition: background-color 100ms;
                 transition: box-shadow 100ms;
             }
-            #finish:hover {
+            #finish:hover, #button:hover {
                 background-color: #50e0ff;
             }
             #finish:active {
                 background-color: #00d2ff;
                 box-shadow: 0px 0px 4px 1px rgba(46, 218, 255, 0.5)
+            }
+            #button {
+                background-color: #77ff80;
+                padding: 5px 15px;
+            }
+            #button:hover {
+                background-color: #52ff5e;
+            }
+            #button:active {
+                background-color: #00ff11;
+                box-shadow: 0px 0px 4px 1px rgba(0, 255, 17, 0.5);
             }
             div {
                 display: flex;
@@ -76,29 +84,6 @@
                 margin-top: -9px;
                 margin-left: 5px;
             }
-            #button {
-                background-color: #dc3545;
-                color: white;
-                border: none;
-                transition: background-color 200ms;
-                transition: box-shadow 200ms;
-                cursor: pointer;
-                padding: 2px 10px;
-                font-weight: 700;
-                border-radius: 3px;
-            }
-            #button {
-                padding: 5px 10px;
-                font-weight: normal;
-                position: static;
-            }
-            #button:hover {
-                background-color: #c82333;
-            }
-            #button:active {
-                background-color: #bd2130;
-                box-shadow: 0px 0px 2px 4px rgba(220, 53, 69, 0.1);
-            }
         </style>
     </head>
     <body>
@@ -109,13 +94,17 @@
                 </div>
                 <div id="lollipops-container">
                     <label>Số Kẹo:</label>
-                    <input placeholder="Kẹo" id="lollipops">
-                </div id="chances-container">
-                <div>
-                    <label>Số Lần Đếm:</label>
-                    <input placeholder="Lần Đếm" id="chances">
+                    <form autocomplete="off">
+                        <input style="margin: 0;" placeholder="Kẹo" id="lollipops">
+                    </form>
                 </div>
-                <button type="submit" id="finish" onclick="finish();">Xong</button>
+                <div id="chances-container">
+                    <label>Số Lần Đếm:</label>
+                    <form autocomplete="off">
+                        <input style="margin-bottom: 5px;" placeholder="Lần Đếm" id="chances">
+                    </form>
+                </div>
+                <button id="finish" onclick="finish();">Xong</button>
             </div>
         </div>
         <div id="main">
@@ -132,7 +121,6 @@
         </div>
     </body>
     <script defer>
-        let form = document.getElementById("form");
         let chances;
         let lollipops;
         let h2 = document.getElementById("h2");
@@ -172,11 +160,11 @@
         function checkIfCorrect() {
             if (parseInt(input.value) == randomNumber) {
                 result.innerHTML = "Chính Xác 🥳🎉";
-                disappear(750);
+                disappear(750, result);
             }
             else {
                 result.innerHTML = "Sai Rồi 😢😔";
-                disappear(750);
+                disappear(750, result);
                 wrong++;
                 if (wrong == chances) {
                     document.getElementById("submit").setAttribute("disabled", "");
